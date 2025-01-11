@@ -1,5 +1,6 @@
 const express = require('express');
 const bp = require('body-parser');
+const sequelize = require('./db');
 const { engine } = require('express-handlebars');
 const app = express();
 
@@ -28,6 +29,12 @@ app.engine('handlebars', engine({
 app.use('/', mainRoute);
 app.use('/add-product-page', addProductRoute);
 app.use('/menu-page', menuRoute);
+
+sequelize.sync() .then(() => { 
+    console.log('Tables created succesfully or already exists.'); 
+}).catch(err => { 
+    console.error('Error creating tables:', err);
+});
 
 // Server port
 app.listen(4444, () => {

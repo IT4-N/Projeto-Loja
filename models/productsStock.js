@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const database = require('../db');
 
-const AddProductsStock = database.define('products', {
+const AddProductsStock = database.define('productsStock', {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
@@ -20,6 +20,8 @@ const AddProductsStock = database.define('products', {
         type: Sequelize.FLOAT,
         allowNull: false
     }
+}, {
+    freezeTableName: true
 });
 
 module.exports = AddProductsStock;
