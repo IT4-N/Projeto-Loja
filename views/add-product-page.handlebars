@@ -1,1 +1,33 @@
 <h1>TesteProd</h1>
+
+<form method="post" action="/add-product-page">
+    <input type="radio" id="selectionProductNoStock" name="productType" value="pizza">
+    <label for="selectionProductNoStock">Pizza</label>
+    <input type="radio" id="selectionProductStock" name="productType" value="bebida">
+    <label for="selectionProductStock">Bebida</label><br>
+    <label for="productName">Nome do produto:</label>
+    <input type="text" name="productName" id="productName">
+    <label for="productName">Quantidade em estoque:</label>
+    <input type="number" name="productQty" id="ProductQty">
+    <label for="productName">Preço:</label>
+    <input type="number" name="productPrice" id="productPrice">
+    <input type="submit" value="Adicionar produto">
+</form>
+
+
+<h2>Pizzas adicionadas</h2>
+{{#each noStockProducts}}
+    <div>
+        <p>Nome: {{this.name}}</p>
+        <p>Preço: {{this.price}}</p>
+    </div>
+{{/each}}
+
+<h2>Bebidas adicionadas</h2>
+{{#each stockProducts}}
+    <div>
+        <p>Nome: {{this.name}}</p>
+        <p>Preço: {{this.price}}</p>
+        <p>Quantidade: {{this.quantity}}</p>
+    </div>
+{{/each}}

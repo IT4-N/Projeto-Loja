@@ -1,45 +1,52 @@
 const express = require('express');
 const router = express.Router();
+const AddProductsStock = require('../../models/productsStock');
+const AddProductsNoStock = require('../../models/productsNoStock');
 
 router.get('/', (req, res) => {
-    res.render('add-product-page', { title: 'Adicionar produto' });
+    Promise.all([
+        AddProductsStock.findAll(),
+        AddProductsNoStock.findAll()
+    ])
+    .then(([stockProducts, noStockProducts]) => {
+        res.render('add-product-page', { 
+            stockProducts: stockProducts,
+            noStockProducts: noStockProducts,
+            title: 'Adicionar produto'
+        });
+    })
+    .catch(err => {
+        console.error('Error fetching products: ', err);
+        res.render('add-product-page', { error: 'Error fetching products', title: 'Adicionar produto' });
+    });
+});
+
+router.post('/', (req, res) => {
+    const productData = {
+        name: req.body.productName,
+        price: req.body.productPrice
+    };
+
+    if (req.body.productType === 'bebida') {
+        AddProductsStock.create({
+            ...productData,
+            quantity: req.body.productQty
+        }).then(() => {
+            res.redirect('/add-product-page');
+        }).catch(err => {
+            console.error('Error adding product to stock: ', err);
+            res.render('add-product-page', { error: 'Error adding product to stock: ' + err.message });
+        });
+    } else if (req.body.productType === 'pizza') {
+        AddProductsNoStock.create(productData).then(() => {
+            res.redirect('/add-product-page');
+        }).catch(err => {
+            console.error('Error adding product to no stock: ', err);
+            res.render('add-product-page', { error: 'Error adding product to no stock: ' + err.message });
+        });
+    } else {
+        res.render('add-product-page', { error: 'Por favor, selecione um tipo de produto válido.' });
+    }
 });
 
 module.exports = router;
-
-const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = new Sequelize('database', 'username', 'password', {
-    host: 'localhost',
-    dialect: 'mysql'  // ou 'postgres', 'sqlite', etc.
-});
-
-const Product = sequelize.define('Product', {
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        allowNull: false,
-        primaryKey: true
-    },
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    price: {
-        type: DataTypes.DECIMAL,
-        allowNull: false
-    },
-    quantity: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    }
-}, {
-    freezeTableName: true  // Evita que o Sequelize pluralize o nome da tabela
-});
-
-sequelize.sync()
-    .then(result => {
-        console.log('Tabela criada com sucesso');
-    })
-    .catch(err => {
-        console.error('Erro ao criar a tabela:', err);
-    });
