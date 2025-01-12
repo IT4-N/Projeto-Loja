@@ -14,7 +14,7 @@ const AddProductsStock = database.define('productsStock', {
     },
     quantity: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: true
     },
     price: {
         type: Sequelize.FLOAT,

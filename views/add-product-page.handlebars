@@ -17,17 +17,20 @@
 
 <h2>Pizzas adicionadas</h2>
 {{#each noStockProducts}}
-    <div>
+    <section class="added-no-stock-products">
         <p>Nome: {{this.name}}</p>
         <p>Preço: {{this.price}}</p>
-    </div>
+
+        <a href="/add-product-page/{{id}}">Delete</a>
+    </section>
 {{/each}}
 
 <h2>Bebidas adicionadas</h2>
 {{#each stockProducts}}
-    <div>
+    <section class="added-stock-products">
         <p>Nome: {{this.name}}</p>
         <p>Preço: {{this.price}}</p>
         <p>Quantidade: {{this.quantity}}</p>
-    </div>
+        <a href="/add-product-page/{{id}}">Delete</a>
+    </section>
 {{/each}}

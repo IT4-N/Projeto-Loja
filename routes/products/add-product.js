@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const AddProductsStock = require('../../models/productsStock');
 const AddProductsNoStock = require('../../models/productsNoStock');
+const { where } = require('sequelize');
 
 router.get('/', (req, res) => {
     Promise.all([
@@ -17,7 +18,7 @@ router.get('/', (req, res) => {
     })
     .catch(err => {
         console.error('Error fetching products: ', err);
-        res.render('add-product-page', { error: 'Error fetching products', title: 'Adicionar produto' });
+        res.render('add-product-page', { error: 'Error fetching products.'});
     });
 });
 
@@ -47,6 +48,20 @@ router.post('/', (req, res) => {
     } else {
         res.render('add-product-page', { error: 'Por favor, selecione um tipo de produto válido.' });
     }
+});
+
+router.get('/:id', (req, res) => {
+    Promise.all([
+        AddProductsStock.destroy({ where: { id: req.params.id }}),
+        AddProductsNoStock.destroy({ where: { id: req.params.id }})
+    ])
+    .then(() => {
+        res.redirect('/add-product-page')
+    })
+    .catch(err => {
+        console.error('Error deleting product: ', err);
+        res.render('add-product-page', { error: 'Error deleting product: ' + err.message })
+    })
 });
 
 module.exports = router;
