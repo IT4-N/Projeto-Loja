@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const AddProductsStock = require('../../models/productsStock');
 const AddProductsNoStock = require('../../models/productsNoStock');
-const { where } = require('sequelize');
 
+// Rendering product page and listing all products on database
 router.get('/', (req, res) => {
     Promise.all([
         AddProductsStock.findAll(),
@@ -22,6 +22,7 @@ router.get('/', (req, res) => {
     });
 });
 
+// Creating products on database and website
 router.post('/', (req, res) => {
     const productData = {
         name: req.body.productName,
@@ -32,16 +33,23 @@ router.post('/', (req, res) => {
         AddProductsStock.create({
             ...productData,
             quantity: req.body.productQty
-        }).then(() => {
+        })
+        .then(() => {
             res.redirect('/add-product-page');
-        }).catch(err => {
+        })
+        .catch(err => {
             console.error('Error adding product to stock: ', err);
             res.render('add-product-page', { error: 'Error adding product to stock: ' + err.message });
         });
     } else if (req.body.productType === 'pizza') {
-        AddProductsNoStock.create(productData).then(() => {
+        AddProductsNoStock.create({
+            ...productData,
+            type: req.body.productNoStockType
+        })
+        .then(() => {
             res.redirect('/add-product-page');
-        }).catch(err => {
+        })
+        .catch(err => {
             console.error('Error adding product to no stock: ', err);
             res.render('add-product-page', { error: 'Error adding product to no stock: ' + err.message });
         });
@@ -50,6 +58,7 @@ router.post('/', (req, res) => {
     }
 });
 
+// Deleting products
 router.get('/:id', (req, res) => {
     Promise.all([
         AddProductsStock.destroy({ where: { id: req.params.id }}),
@@ -63,5 +72,8 @@ router.get('/:id', (req, res) => {
         res.render('add-product-page', { error: 'Error deleting product: ' + err.message })
     })
 });
+
+AddProductsStock.belongsTo(AddProductsNoStock, { foreignKey: 'id', onDelete: 'SET NULL', onUpdate: 'NO ACTION' });
+AddProductsNoStock.hasMany(AddProductsStock, { foreignKey: 'id' });
 
 module.exports = router;

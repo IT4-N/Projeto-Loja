@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 const database = require('../db');
 
+// Adicionar pizzas (produtos sem estoque)
 const AddProductsNoStock = database.define('productsNoStock', {
     id: {
         type: Sequelize.INTEGER,
@@ -9,6 +10,10 @@ const AddProductsNoStock = database.define('productsNoStock', {
         primaryKey: true
     },
     name: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    type: {
         type: Sequelize.STRING,
         allowNull: false
     },
