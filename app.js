@@ -10,6 +10,7 @@ const AddProductsStock = require('./models/productsStock');
 // Importing routes
 const mainRoute = require('./routes/main');
 const addProductRoute = require('./routes/products/add-product');
+const editProductRoute = require('./routes/products/edit-product');
 const menuRoute = require('./routes/menu/menu');
 
 // Setting BP
@@ -31,6 +32,7 @@ app.engine('handlebars', engine({
 // Using routes
 app.use('/', mainRoute);
 app.use('/add-product-page', addProductRoute);
+app.use('/edit-product-page', editProductRoute);
 app.use('/menu-page', menuRoute);
 
 // Server port
