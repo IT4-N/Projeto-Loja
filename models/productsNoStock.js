@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const database = require('../db');
 
-// Adicionar pizzas (produtos sem estoque)
+// Adding pizzas (product without a stock)
 const AddProductsNoStock = database.define('productsNoStock', {
     id: {
         type: Sequelize.INTEGER,

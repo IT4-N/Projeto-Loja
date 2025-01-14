@@ -3,66 +3,76 @@ const router = express.Router();
 const AddProductsStock = require('../../models/productsStock');
 const AddProductsNoStock = require('../../models/productsNoStock');
 
-// Rendering 'edit product' page, along with the product's ID
-router.get('/:id', (req, res) => {
-    Promise.all([
-        AddProductsStock.findByPk(req.params.id),
-        AddProductsNoStock.findByPk(req.params.id)
-    ])
-    .then(([stockProduct, noStockProduct]) => {
-        if (stockProduct) {
-            res.render('edit-product-page', { product: stockProduct, type: 'bebida' });
-        } else if (noStockProduct) {
-            res.render('edit-product-page', { product: noStockProduct, type: 'pizza' });
-        } else {
-            res.send('Product not found.');
-        }
-    })
-    .catch(err => {
-        console.error('Error fetching product: ', err);
-        res.send('Error fetching product.');
-    });
+// Rendering 'edit product' page for stock products (bebida)
+router.get('/bebida/:id', (req, res) => {
+    const productId = req.params.id;
+
+    AddProductsStock.findByPk(productId)
+        .then(stockProduct => {
+            if (stockProduct) {
+                res.render('edit-product-page', { product: stockProduct, productType: 'bebida' });
+            } else {
+                res.send('Product not found.');
+            }
+        })
+        .catch(err => {
+            console.error('Error fetching stock product: ', err);
+            res.send('Error fetching stock product.');
+        });
 });
 
-// Editing the product
-router.post('/:id', (req, res) => {
-    const { newProductName, newProductQty, newProductPrice, type } = req.body;
+// Rendering 'edit product' page for no stock products (pizza)
+router.get('/pizza/:id', (req, res) => {
+    const productId = req.params.id;
 
-    if (type === 'bebida') {
-        AddProductsStock.update(
-            { name: newProductName, quantity: newProductQty, price: newProductPrice },
-            { where: { id: req.params.id } }
-        )
-        .then((result) => {
-            if (result[0] === 0) {
-                res.send('Product not found in stock.');
+    AddProductsNoStock.findByPk(productId)
+        .then(noStockProduct => {
+            if (noStockProduct) {
+                res.render('edit-product-page', { product: noStockProduct, productType: 'pizza' });
             } else {
-                res.redirect('/add-product-page');
+                res.send('Product not found.');
             }
+        })
+        .catch(err => {
+            console.error('Error fetching no stock product: ', err);
+            res.send('Error fetching no stock product.');
+        });
+});
+
+// Editing the stock product (bebida)
+router.post('/bebida/:id', (req, res) => {
+    const { newProductName, newProductQty, newProductPrice } = req.body;
+    const productId = req.params.id;
+
+    AddProductsStock.update(
+        { name: newProductName, quantity: newProductQty, price: newProductPrice },
+        { where: { id: productId } }
+    )
+        .then(() => {
+            res.redirect('/add-product-page');
         })
         .catch(err => {
             console.error('Error editing stock product: ', err);
             res.send('Error editing stock product: ' + err.message);
         });
-    } else if (type === 'pizza') {
-        AddProductsNoStock.update(
-            { name: newProductName, price: newProductPrice },
-            { where: { id: req.params.id } }
-        )
-        .then((result) => {
-            if (result[0] === 0) {
-                res.send('Product not found in no stock.');
-            } else {
-                res.redirect('/add-product-page');
-            }
+});
+
+// Editing the no stock product (pizza)
+router.post('/pizza/:id', (req, res) => {
+    const { newProductName, newProductNoStockType, newProductPrice } = req.body;
+    const productId = req.params.id;
+
+    AddProductsNoStock.update(
+        { name: newProductName, type: newProductNoStockType, price: newProductPrice },
+        { where: { id: productId } }
+    )
+        .then(() => {
+            res.redirect('/add-product-page');
         })
         .catch(err => {
             console.error('Error editing no stock product: ', err);
             res.send('Error editing no stock product: ' + err.message);
         });
-    } else {
-        res.send('Invalid product type.');
-    }
 });
 
 module.exports = router;

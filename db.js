@@ -1,19 +1,20 @@
-const Sequelize = require('sequelize');
+const { Sequelize } = require('sequelize');
+
 const sequelize = new Sequelize('pizzaria', 'root', '1234', {
     dialect: 'mysql',
     host: 'localhost',
     port: '3306'
 });
 
-sequelize.authenticate().then(function () {
-    console.log("Connected to database!")
-}).catch(function (error) {
-    console.log("Error connecting to database.")
+sequelize.authenticate().then(() => {
+    console.log("Connected to database!");
+}).catch((error) => {
+    console.log("Error connecting to database:", error);
 });
 
-sequelize.sync() .then(() => { 
-    console.log('Tables created succesfully or already exists.'); 
-}).catch(err => { 
+sequelize.sync().then(() => {
+    console.log('Tables created successfully or already exist.');
+}).catch((err) => {
     console.error('Error creating tables:', err);
 });
 

@@ -8,12 +8,10 @@
     <label for="selectionProductStock">Bebida</label><br>
     <label for="productName">Nome do produto:</label>
     <input type="text" name="productName" id="productName">
-
     <select name="productNoStockType" id="productNoStockType">
         <option value="Tradicional">Tradicional</option>
         <option value="Supreme">Supreme</option>
     </select>
-
     <label for="productName">Quantidade em estoque:</label>
     <input type="number" name="productQty" id="ProductQty">
     <label for="productName">Preço:</label>
@@ -29,8 +27,8 @@
     <p>Tipo: {{this.type}}</p>
     <p>Preço: R$ {{this.price}},00</p>
 
-    <a href="/edit-product-page/{{id}}">Edit</a>
-    <a href="/add-product-page/{{id}}">Delete</a>
+    <a href="/edit-product-page/pizza/{{id}}">Edit</a>
+    <a href="/add-product-page/pizza/{{id}}">Delete</a>
 </section>
 {{/each}}
 
@@ -42,7 +40,7 @@
     <p>Quantidade: {{this.quantity}}</p>
     <p>Preço: R$ {{this.price}},00</p>
 
-    <a href="/edit-product-page/{{id}}">Edit</a>
-    <a href="/add-product-page/{{id}}">Delete</a>  
+    <a href="/edit-product-page/bebida/{{id}}">Edit</a>
+    <a href="/add-product-page/bebida/{{id}}">Delete</a>  
 </section>
 {{/each}}

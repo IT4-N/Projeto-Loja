@@ -15,7 +15,7 @@ const menuRoute = require('./routes/menu/menu');
 const tradPizzaRoute = require('./routes/menu/traditional-pizza');
 const supPizzaRoute = require('./routes/menu/supreme-pizza')
 
-// Setting BP
+// Setting Body Parser
 app.use(bp.urlencoded({ extended: false }));
 app.use(bp.json());
 app.use(express.static('./public'));
