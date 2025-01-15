@@ -1,7 +1,23 @@
-<h2>Traditional</h2>
+<h1>Traditional</h1>
 
-<form action="">
-    <input type="checkbox" name="pizzaPort" id="pizzaPort">
-    <input type="checkbox" name="pizzaMarg" id="pizzaMarg">
-    <input type="checkbox" name="pizzaFrangCatu" id="pizzaFrangCatu">
+<p>Tamanho da pizza: </p>
+
+<form action="/cart-page" method="post">
+    <input type="radio" name="tradPizzaSize" id="tradPizzaBig" value="grande" checked>
+    <label for="tradPizzaBig">Grande</label>
+    <input type="radio" name="tradPizzaSize" id="tradPizzaLarge" value="familia">
+    <label for="tradPizzaLarge">Família</label>
+
+    {{#each noStockProducts}}
+        {{#if (eq this.type "Tradicional")}}
+            <section class="added-traditional-pizzas">
+                <input type="checkbox" name="tradPizzaName" id="tradPizzaName-{{@index}}" value="{{this.name}}">
+                <label for="tradPizzaName-{{@index}}">{{this.name}}</label>
+            </section>
+        {{/if}}
+    {{/each}}
+
+    <p>Total: R$ {{totalPrice}},00</p>
+
+    <button type="submit">Adicionar ao Carrinho</button>
 </form>

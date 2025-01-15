@@ -39,7 +39,7 @@ router.get('/pizza/:id', (req, res) => {
         });
 });
 
-// Editing the stock product (bebida)
+// Editing stock products (bebida)
 router.post('/bebida/:id', (req, res) => {
     const { newProductName, newProductQty, newProductPrice } = req.body;
     const productId = req.params.id;
@@ -57,7 +57,7 @@ router.post('/bebida/:id', (req, res) => {
         });
 });
 
-// Editing the no stock product (pizza)
+// Editing no stock products (pizza)
 router.post('/pizza/:id', (req, res) => {
     const { newProductName, newProductNoStockType, newProductPrice } = req.body;
     const productId = req.params.id;

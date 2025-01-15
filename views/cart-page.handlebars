@@ -1,0 +1,3 @@
+{{#each (groupBy cart 'tradPizzaSize') as |group|}}
+    <p>{{group.key}} - {{#each group.items}}{{this.tradPizzaName}}{{#unless @last}}, {{/unless}}{{/each}}</p>
+{{/each}}

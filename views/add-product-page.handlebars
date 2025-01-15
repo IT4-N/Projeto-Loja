@@ -2,10 +2,10 @@
 
 {{!-- Form for adding products --}}
 <form method="post" action="/add-product-page">
-    <input type="radio" id="selectionProductNoStock" name="productType" value="pizza">
-    <label for="selectionProductNoStock">Pizza</label>
-    <input type="radio" id="selectionProductStock" name="productType" value="bebida">
-    <label for="selectionProductStock">Bebida</label><br>
+    <input type="radio" id="productTypeSelection" name="productType" value="pizza" checked>
+    <label for="productTypeSelection">Pizza</label>
+    <input type="radio" id="productTypeSelection" name="productType" value="bebida">
+    <label for="productTypeSelection">Bebida</label><br>
     <label for="productName">Nome do produto:</label>
     <input type="text" name="productName" id="productName">
     <select name="productNoStockType" id="productNoStockType">
@@ -41,6 +41,19 @@
     <p>Preço: R$ {{this.price}},00</p>
 
     <a href="/edit-product-page/bebida/{{id}}">Edit</a>
-    <a href="/add-product-page/bebida/{{id}}">Delete</a>  
+    <a href="/add-product-page/bebida/{{id}}">Delete</a>
 </section>
 {{/each}}
+
+{{!-- <script>
+    function autoPricing() {
+        var selection = document.getElementById('productNoStockType').value;
+        var price = document.getElementById('price');
+
+        if (selection === 'Tradicional') {
+            price.value = parseFloat('36');
+        } else {
+            price.value = parseFloat('');
+        }
+    }
+</script> --}}

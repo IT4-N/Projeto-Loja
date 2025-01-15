@@ -1,7 +1,18 @@
 <h1>Supreme</h1>
 
-<form action="">
-    <input type="checkbox" name="pizzaPort" id="pizzaPort">
-    <input type="checkbox" name="pizzaMarg" id="pizzaMarg">
-    <input type="checkbox" name="pizzaFrangCatu" id="pizzaFrangCatu">
-</form>
+<p>Tamanho da pizza: </p>
+<input type="radio" name="supPizzaSize" id="supPizzaBig" value="grande" checked>
+<label for="supPizzaBig">Grande</label>
+<input type="radio" name="supPizzaSize" id="supPizzaLarge" value="familia">
+<label for="supPizzaLarge">Família</label>
+
+{{#each noStockProducts}}
+    {{#if (eq this.type "Supreme")}}
+        <section class="added-supreme-pizzas">
+            <input type="checkbox" name="supPizzaName" id="supPizzaName">
+            <label for="supPizzaName">{{this.name}}</label>
+        </section>
+    {{/if}}
+{{/each}}
+
+<p>Total: {{supPrice}}</p>

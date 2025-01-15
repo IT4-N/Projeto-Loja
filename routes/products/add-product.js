@@ -58,7 +58,7 @@ router.post('/', (req, res) => {
     }
 });
 
-// Deleting products
+// Deleting no stock products (pizza)
 router.get('/pizza/:id', (req, res) => {
         AddProductsNoStock.destroy({ where: { id: req.params.id } })
         .then(() => {
@@ -70,6 +70,7 @@ router.get('/pizza/:id', (req, res) => {
         })
 });
 
+// Deleting stock products (bebida)
 router.get('/bebida/:id', (req, res) => {
     AddProductsStock.destroy({ where: { id: req.params.id } })
     .then(() => {
